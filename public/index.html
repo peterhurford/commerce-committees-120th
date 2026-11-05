@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Commerce Committees, 120th</title>
+<style>:root{box-sizing:border-box}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one column of two committee "dockets"; each pairs a 119th and a 120th hemicycle, then a seat ledger. */
+:root{
+  --bg:#f5f6f8; --panel:#ffffff; --ink:#18202c; --muted:#5b6575; --rule:#dde1e8;
+  --d:#2f5fb3; --d-soft:#dbe5f6; --r:#c0392b; --r-soft:#f6dcd8; --warn:#b7791f; --warn-soft:#f8ecd6;
+  --display:"Public Sans",system-ui,sans-serif; --body:"Public Sans",system-ui,sans-serif; --mono:"IBM Plex Mono",ui-monospace,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#11151c; --panel:#181e27; --ink:#e7ebf1; --muted:#9aa4b3; --rule:#2a3240;
+  --d:#6f9be6; --d-soft:#1f3150; --r:#e8705f; --r-soft:#4a2420; --warn:#e2a64a; --warn-soft:#3d2e14; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#11151c; --panel:#181e27; --ink:#e7ebf1; --muted:#9aa4b3; --rule:#2a3240;
+  --d:#6f9be6; --d-soft:#1f3150; --r:#e8705f; --r-soft:#4a2420; --warn:#e2a64a; --warn-soft:#3d2e14; color-scheme:dark}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.5}
+.wrap{max-width:1080px;margin:0 auto;padding-block:20px 56px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:grid;gap:28px}
+h1{font-family:var(--display);font-weight:800;font-size:clamp(26px,4vw,38px);line-height:1.1;margin:0;text-wrap:balance;letter-spacing:-.01em}
+h2{font-family:var(--display);font-weight:800;font-size:22px;margin:0;text-wrap:balance}
+h3{font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin:0;font-weight:700}
+p{margin:0;max-width:68ch}
+.lede{color:var(--muted);font-size:16px}
+.eyebrow{font-family:var(--mono);font-size:12px;color:var(--muted);letter-spacing:.04em}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.head{display:grid;gap:10px}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.tile{background:var(--panel);border:1px solid var(--rule);border-radius:6px;padding:14px 16px;display:grid;gap:4px}
+.tile .big{font-family:var(--mono);font-size:26px;font-weight:500}
+.tile .big .d{color:var(--d)} .tile .big .r{color:var(--r)}
+.newd{font-family:var(--display);font-weight:800;font-size:40px;line-height:1;color:var(--d)}
+.newd span{font-size:16px;font-weight:700;margin-left:4px}
+.newcap{color:var(--d);font-weight:700;border:1px dashed var(--d);padding:1px 6px;border-radius:3px}
+#tip{position:fixed;z-index:20;pointer-events:none;background:var(--ink);color:var(--panel);font-size:13px;line-height:1.35;padding:7px 10px;border-radius:5px;max-width:260px;box-shadow:0 4px 14px rgba(0,0,0,.25)}
+#tip b{display:block;font-size:14px}
+.seat{cursor:pointer}
+.seat circle{transition:transform .12s;transform-box:fill-box;transform-origin:center}
+.seat:hover circle,.seat.on circle{transform:scale(1.35)}
+.tile small{color:var(--muted);font-size:13px}
+.docket{background:var(--panel);border:1px solid var(--rule);border-radius:8px;padding:22px;display:grid;gap:20px}
+.docket-head{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 20px;align-items:baseline}
+.charts{display:grid;grid-template-columns:1fr auto 1fr;gap:12px;align-items:center}
+.chart{display:grid;gap:6px;justify-items:center;min-width:0}
+.chart svg{width:100%;max-width:420px;height:auto;display:block}
+.chart .cap{font-family:var(--mono);font-size:13px;text-align:center}
+.chart .cap b{font-family:var(--body);font-size:14px}
+.arrow{color:var(--muted);font-size:28px}
+@media (max-width:720px){.charts{grid-template-columns:1fr}.arrow{transform:rotate(90deg);justify-self:center}}
+.legend{display:flex;flex-wrap:wrap;gap:8px 18px;font-size:13px;color:var(--muted)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend svg{width:14px;height:14px}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media (max-width:720px){.cols{grid-template-columns:1fr}}
+.ledger{display:grid;gap:6px;min-width:0;align-content:start}
+.ledger h3{padding-bottom:4px;border-bottom:2px solid var(--rule)}
+.ledger.dem h3{border-color:var(--d)} .ledger.rep h3{border-color:var(--r)}
+.row{display:grid;grid-template-columns:26px minmax(0,1fr) auto;gap:8px;align-items:baseline;padding:3px 0;border-bottom:1px dashed var(--rule);font-size:14px}
+.row .rk{font-family:var(--mono);font-size:12px;color:var(--muted)}
+.row .nm{min-width:0} .row .nm em{font-style:normal;color:var(--muted);font-size:12.5px;display:block;line-height:1.35}
+.chip{font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:2px 7px;border-radius:3px;white-space:nowrap;font-family:var(--mono)}
+.chip.ret{color:var(--muted);border:1px solid var(--rule)}
+.chip.leave{background:var(--ink);color:var(--panel)}
+.chip.risk{background:var(--warn-soft);color:var(--warn)}
+.chip.open{border:1px dashed currentColor}
+.dem .chip.open{color:var(--d)} .rep .chip.open{color:var(--r)}
+.row.left .nm>span{text-decoration:line-through;text-decoration-thickness:1px;color:var(--muted)}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{text-align:left;padding:6px 10px 6px 0;border-bottom:1px solid var(--rule);vertical-align:top}
+th{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:700}
+td.num{font-family:var(--mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+.tbl{overflow-x:auto}
+.note{font-size:13px;color:var(--muted)}
+.callouts{display:grid;gap:10px}
+.callout{border-left:3px solid var(--warn);padding:2px 0 2px 12px}
+.callout b{display:block}
+.sources{font-size:13px;color:var(--muted);display:grid;gap:4px}
+.sources a{color:var(--d)}
+a:focus-visible,button:focus-visible{outline:2px solid var(--d);outline-offset:2px}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <section class="tiles" aria-label="Summary">
+    <div class="tile"><h3>Senate Commerce</h3><div class="newd">+5 <span>new Democrats</span></div><div class="big"><span class="r">15R</span>–<span class="d">13D</span> → <span class="d">16D</span>–<span class="r">12R</span></div><small>2 Democrats and 3 Republicans leave. No Republican is bumped.</small></div>
+    <div class="tile"><h3>House E&amp;C</h3><div class="newd">+16 <span>new Democrats</span></div><div class="big"><span class="r">30R</span>–<span class="d">24D</span> → <span class="d">36D</span>–<span class="r">23R</span></div><small>4 Democrats and 8 Republicans leave. 1 new Republican.</small></div>
+  </section>
+
+  <section class="docket" id="senate">
+    <div class="docket-head">
+      <h2>Senate Commerce, Science &amp; Transportation</h2>
+      <span class="eyebrow">CHAIR CRUZ → CANTWELL · RANKING CANTWELL → CRUZ</span>
+    </div>
+    <div class="charts">
+      <figure class="chart" style="margin:0"><svg id="sen119" role="img" aria-label="119th Senate Commerce seats"></svg><div class="cap"><b>119th today</b> · 15R–13D · 28 seats</div></figure>
+      <div class="arrow" aria-hidden="true">→</div>
+      <figure class="chart" style="margin:0"><svg id="sen120" role="img" aria-label="Projected 120th Senate Commerce seats"></svg><div class="cap"><b>120th projected</b> · 16D–12R · <span class="newcap">5 new D</span></div></figure>
+    </div>
+    <div class="legend" id="legend-sen"></div>
+    <div class="cols">
+      <div class="ledger dem" id="sen-d"></div>
+      <div class="ledger rep" id="sen-r"></div>
+    </div>
+  </section>
+
+  <section class="docket" id="house">
+    <div class="docket-head">
+      <h2>House Energy &amp; Commerce</h2>
+      <span class="eyebrow">CHAIR GUTHRIE → PALLONE · RANKING PALLONE → GUTHRIE</span>
+    </div>
+    <div class="charts">
+      <figure class="chart" style="margin:0"><svg id="hou119" role="img" aria-label="119th House Energy and Commerce seats"></svg><div class="cap"><b>119th today</b> · 30R–24D · 54 seats</div></figure>
+      <div class="arrow" aria-hidden="true">→</div>
+      <figure class="chart" style="margin:0"><svg id="hou120" role="img" aria-label="Projected 120th House Energy and Commerce seats"></svg><div class="cap"><b>120th projected</b> · 36D–23R · <span class="newcap">16 new D</span></div></figure>
+    </div>
+    <div class="legend" id="legend-hou"></div>
+    <div class="cols">
+      <div class="ledger dem" id="hou-d"></div>
+      <div class="ledger rep" id="hou-r"></div>
+    </div>
+    <div class="tbl">
+      <table>
+        <thead><tr><th>Subcommittee (D ranking member, 119th)</th><th>120th gavel</th></tr></thead>
+        <tbody>
+          <tr><td>Health (DeGette)</td><td><b>Open.</b> DeGette lost her primary. Ruiz has said he wants the gavel; Bloomberg Government reports a second, unnamed member also wants it.</td></tr>
+          <tr><td>Commerce, Manufacturing &amp; Trade (Schakowsky)</td><td><b>Open.</b> Schakowsky is retiring. This is the gavel for AI, privacy and kids' online safety.</td></tr>
+          <tr><td>Communications &amp; Technology (Matsui)</td><td>Matsui</td></tr>
+          <tr><td>Energy (Castor)</td><td>Castor</td></tr>
+          <tr><td>Environment (Tonko) · Oversight (Clarke)</td><td>Tonko · Clarke</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+</div>
+
+<script>
+const SEN = {
+ D:[
+  ["Cantwell","WA","ret","Becomes chair"],["Klobuchar","MN","leave","Elected MN governor"],["Schatz","HI","ret",""],
+  ["Markey","MA","ret","Beat Moulton in the primary; reelected"],["Peters","MI","leave","Retired"],["Baldwin","WI","ret",""],
+  ["Duckworth","IL","ret",""],["Rosen","NV","ret",""],["Luján","NM","ret","Reelected"],["Hickenlooper","CO","ret","Reelected"],
+  ["Fetterman","PA","ret",""],["Kim","NJ","ret",""],["Blunt Rochester","DE","ret",""]],
+ R:[
+  ["Cruz","TX","ret","Becomes ranking member"],["Thune","SD","ret","Minority leader; could give up the seat"],["Wicker","MS","ret",""],
+  ["Fischer","NE","ret",""],["Moran","KS","ret",""],["Sullivan","AK","leave","Lost reelection to Peltola"],
+  ["Blackburn","TN","leave","Elected TN governor"],["Young","IN","ret",""],["Budd","NC","ret",""],["Schmitt","MO","ret",""],
+  ["Curtis","UT","ret",""],["Moreno","OH","ret",""],["Sheehy","MT","ret",""],["Capito","WV","ret","Reelected"],["Lummis","WY","leave","Retired"]],
+ openD:[5,""],
+ openR:[0,""], size120:[16,12]
+};
+const HOU = {
+ D:[
+  ["Pallone","NJ-06","ret","Becomes chair"],["DeGette","CO-01","leave","Lost Jun 30 primary to Melat Kiros"],["Schakowsky","IL-09","leave","Retired (Biss is the nominee)"],
+  ["Matsui","CA-07","ret",""],["Castor","FL-14","ret",""],
+  ["Tonko","NY-20","ret",""],["Clarke","NY-09","ret",""],["Ruiz","CA-25","ret","Wants the Health gavel"],["Peters","CA-50","ret",""],
+  ["Dingell","MI-06","ret",""],["Veasey","TX-33","leave","Not running; Allred is the nominee"],["Kelly","IL-02","leave","Ran for Senate"],
+  ["Barragán","CA-44","ret",""],["Soto","FL-09","ret",""],
+  ["Schrier","WA-08","ret",""],["Trahan","MA-03","ret",""],["Fletcher","TX-07","ret",""],["Ocasio-Cortez","NY-14","ret",""],
+  ["Auchincloss","MA-04","ret",""],["Carter","LA-02","ret",""],["Menendez","NJ-08","ret","Unopposed"],["Mullin","CA-15","ret",""],
+  ["Landsman","OH-01","ret",""],["McClellan","VA-04","ret",""]],
+ R:[
+  ["Guthrie","KY-02","ret","Becomes ranking member"],["Latta","OH-05","ret",""],["Griffith","VA-09","ret",""],
+  ["Bilirakis","FL-12","ret",""],["Hudson","NC-09","leave","NRCC chair; lost reelection to Ojeda"],
+  ["B. Carter","GA-01","leave","Ran for GA Senate"],["Palmer","AL-06","ret",""],["Dunn","FL-02","leave","Retired"],
+  ["Crenshaw","TX-02","leave","Lost Mar 3 primary to Steve Toth"],["Joyce","PA-13","ret",""],["Weber","TX-14","ret",""],
+  ["Allen","GA-12","ret",""],["Balderson","OH-12","ret",""],["Fulcher","ID-01","ret",""],
+  ["Pfluger","TX-11","ret",""],["Harshbarger","TN-01","ret",""],["Miller-Meeks","IA-01","leave","Lost reelection"],
+  ["Cammack","FL-03","ret",""],["Obernolte","CA-23","risk","California still counting"],
+  ["James","MI-10","leave","Ran for MI governor"],["Bentz","OR-02","ret",""],["Houchin","IN-09","ret",""],["Fry","SC-07","ret",""],
+  ["Lee","FL-15","ret",""],["Langworthy","NY-23","ret",""],["Kean","NJ-07","leave","Lost reelection"],
+  ["Rulli","OH-06","ret",""],["Evans","CO-08","leave","Lost reelection"],["Goldman","TX-12","ret",""],["Fedorchak","ND-AL","ret","Most junior"]],
+ openD:[16,""],
+ openR:[1,""], size120:[36,23]
+};
+
+const NS="http://www.w3.org/2000/svg";
+function seatPositions(n){
+  const rows = n<=30?3:n<=48?4:5, r0=0.5, pos=[];
+  const radii=[...Array(rows)].map((_,i)=>r0+(1-r0)*i/(rows-1));
+  const tot=radii.reduce((a,b)=>a+b,0);
+  let counts=radii.map(r=>Math.round(n*r/tot)), diff=n-counts.reduce((a,b)=>a+b,0);
+  counts[rows-1]+=diff;
+  radii.forEach((r,i)=>{const m=counts[i];for(let j=0;j<m;j++){const t=Math.PI*(m===1?.5:1-j/(m-1));pos.push({x:Math.cos(t)*r,y:Math.sin(t)*r,t});}});
+  pos.sort((a,b)=>b.t-a.t || a.y-b.y);
+  return {pos,rows};
+}
+// seat kinds: ret, risk, leave, open; party d/r
+function drawHemi(svgId, seats, center){
+  const svg=document.getElementById(svgId), W=220,H=118,cx=110,cy=108,R=100;
+  svg.setAttribute("viewBox",`0 0 ${W} ${H}`);
+  const {pos,rows}=seatPositions(seats.length);
+  const dot = Math.min(7.2, (R*(1-.5)/(rows-1))*0.42, 150/seats.length+2.2);
+  seats.forEach((s,i)=>{
+    const p=pos[i], x=cx+p.x*R, y=cy-p.y*R;
+    const g=document.createElementNS(NS,"g");
+    const col=`var(--${s.p})`;
+    const c=document.createElementNS(NS,"circle");
+    c.setAttribute("cx",x);c.setAttribute("cy",y);c.setAttribute("r",dot);
+    if(s.k==="ret"){c.setAttribute("fill",col);}
+    else if(s.k==="risk"){c.setAttribute("fill",col);c.setAttribute("stroke","var(--warn)");c.setAttribute("stroke-width",dot*.45);}
+    else if(s.k==="leave"){c.setAttribute("fill",`var(--${s.p}-soft)`);c.setAttribute("stroke",col);c.setAttribute("stroke-width",1);}
+    else {c.setAttribute("fill","var(--panel)");c.setAttribute("stroke",col);c.setAttribute("stroke-width",1.3);c.setAttribute("stroke-dasharray","2 1.6");}
+    g.appendChild(c);
+    if(s.k==="leave"){const l=document.createElementNS(NS,"line");const d=dot*.62;
+      l.setAttribute("x1",x-d);l.setAttribute("y1",y+d);l.setAttribute("x2",x+d);l.setAttribute("y2",y-d);
+      l.setAttribute("stroke",col);l.setAttribute("stroke-width",1.4);l.setAttribute("stroke-linecap","round");g.appendChild(l);}
+    if(s.k==="risk"){const q=document.createElementNS(NS,"text");q.setAttribute("x",x);q.setAttribute("y",y);q.setAttribute("text-anchor","middle");q.setAttribute("dominant-baseline","central");
+      q.setAttribute("fill","#fff");q.setAttribute("font-weight","800");q.setAttribute("font-size",dot*1.55);q.setAttribute("font-family","Public Sans, system-ui, sans-serif");q.textContent="?";g.appendChild(q);}
+    // larger invisible hit target so small seats are easy to hover and tap
+    const hit=document.createElementNS(NS,"circle");hit.setAttribute("cx",x);hit.setAttribute("cy",y);hit.setAttribute("r",dot*1.5);hit.setAttribute("fill","transparent");g.appendChild(hit);
+    g.setAttribute("class","seat");g.setAttribute("tabindex","0");g.setAttribute("aria-label",s.label);
+    g.dataset.name=s.name; g.dataset.note=s.note;
+    svg.appendChild(g);
+  });
+  if(center){const t=document.createElementNS(NS,"text");t.setAttribute("x",cx);t.setAttribute("y",cy-4);t.setAttribute("text-anchor","middle");
+    t.setAttribute("fill",center.color);t.setAttribute("font-family","Public Sans, system-ui, sans-serif");t.setAttribute("font-weight","800");t.setAttribute("font-size",center.size||15);t.textContent=center.text;svg.appendChild(t);
+    if(center.sub){const u=document.createElementNS(NS,"text");u.setAttribute("x",cx);u.setAttribute("y",cy+8);u.setAttribute("text-anchor","middle");u.setAttribute("fill","var(--muted)");u.setAttribute("font-size",7.5);u.setAttribute("font-family","Public Sans, system-ui, sans-serif");u.textContent=center.sub;svg.appendChild(u);}}
+}
+function seatsFor(C, which){
+  const kind={ret:"Returns",risk:"Uncalled",leave:"Leaves"};
+  const toSeat=(m,p)=>({p,k:m[2],name:`${m[0]} (${p.toUpperCase()}-${m[1]})`,note:[kind[m[2]],m[3]].filter(Boolean).join(" · "),label:`${m[0]} (${m[1]})${m[3]?" · "+m[3]:""}`});
+  const order={ret:0,risk:1,leave:2,open:2};
+  let d=C.D.map(m=>toSeat(m,"d")), r=C.R.map(m=>toSeat(m,"r"));
+  if(which==="120"){
+    d=d.filter(s=>s.k!=="leave"); r=r.filter(s=>s.k!=="leave");
+    for(let i=0;i<C.openD[0];i++) d.push({p:"d",k:"open",name:"New Democratic seat",note:"Filled by the Democratic steering committee in January",label:"New Democratic seat"});
+    for(let i=0;i<C.openR[0];i++) r.push({p:"r",k:"open",name:"New Republican seat",note:"",label:"New Republican seat"});
+  }
+  d.sort((a,b)=>order[a.k]-order[b.k]); r.sort((a,b)=>order[b.k]-order[a.k]);
+  return [...d,...r];
+}
+function ledger(elId, members, party, open, title){
+  const el=document.getElementById(elId);
+  const ret=members.filter(m=>m[2]!=="leave").length, lv=members.length-ret;
+  let h=`<h3>${title} · ${members.length} now · ${lv} leaving · ${open[0]} new</h3>`;
+  members.forEach((m,i)=>{
+    const chip = m[2]==="ret"?'<span class="chip ret">Returns</span>':m[2]==="leave"?'<span class="chip leave">Leaves</span>':'<span class="chip risk">Uncalled ?</span>';
+    h+=`<div class="row ${m[2]==="leave"?"left":""}"><span class="rk">${i+1}</span><span class="nm"><span>${m[0]}</span> <span class="mono" style="font-size:12px;color:var(--muted)">${m[1]}</span>${m[3]?`<em>${m[3]}</em>`:""}</span>${chip}</div>`;
+  });
+  if(open[0]>0||open[1]) h+=`<div class="row"><span class="rk">+</span><span class="nm"><span>${open[0]} new seat${open[0]===1?"":"s"}</span>${open[1]?`<em>${open[1]}</em>`:""}</span><span class="chip open">Open</span></div>`;
+  el.innerHTML=h;
+}
+function legend(elId){
+  const it=[["ret","Returns"],["risk","Uncalled"],["leave","Leaves"],["open","New slot"]];
+  document.getElementById(elId).innerHTML=it.map(([k,l])=>{
+    const s = k==="ret"?'<circle cx="7" cy="7" r="5.5" fill="var(--muted)"/>':
+      k==="risk"?'<circle cx="7" cy="7" r="5" fill="var(--muted)" stroke="var(--warn)" stroke-width="2.2"/><text x="7" y="7.4" text-anchor="middle" dominant-baseline="central" fill="#fff" font-size="7.5" font-weight="800">?</text>':
+      k==="leave"?'<circle cx="7" cy="7" r="5.5" fill="var(--rule)" stroke="var(--muted)"/><line x1="3.5" y1="10.5" x2="10.5" y2="3.5" stroke="var(--muted)" stroke-width="1.4"/>':
+      '<circle cx="7" cy="7" r="5.5" fill="var(--panel)" stroke="var(--muted)" stroke-width="1.3" stroke-dasharray="2 1.6"/>';
+    return `<span><svg viewBox="0 0 14 14">${s}</svg>${l}</span>`;}).join("")+'<span>Hover or tap any seat for the member</span>';
+}
+drawHemi("sen119",seatsFor(SEN,"119"),{text:"15R–13D",color:"var(--ink)",sub:"3 R and 2 D leave"});
+drawHemi("sen120",seatsFor(SEN,"120"),{text:"+5 new D",color:"var(--d)",size:14,sub:"16D–12R"});
+drawHemi("hou119",seatsFor(HOU,"119"),{text:"30R–24D",color:"var(--ink)",sub:"8 R and 4 D leave"});
+drawHemi("hou120",seatsFor(HOU,"120"),{text:"+16 new D",color:"var(--d)",size:14,sub:"36D–23R"});
+const tip=document.createElement("div");tip.id="tip";tip.hidden=true;document.body.appendChild(tip);
+let pinned=null;
+function show(g,x,y){tip.innerHTML=`<b>${g.dataset.name}</b>${g.dataset.note||""}`;tip.hidden=false;
+  const w=tip.offsetWidth,h=tip.offsetHeight;let L=x+14,T=y-h-12;if(L+w>innerWidth-8)L=x-w-14;if(L<8)L=8;if(T<8)T=y+16;tip.style.left=L+"px";tip.style.top=T+"px";}
+function hide(){tip.hidden=true;if(pinned){pinned.classList.remove("on");pinned=null;}}
+document.querySelectorAll(".seat").forEach(g=>{
+  g.addEventListener("pointerenter",e=>{if(e.pointerType==="mouse")show(g,e.clientX,e.clientY)});
+  g.addEventListener("pointermove",e=>{if(e.pointerType==="mouse"&&!pinned)show(g,e.clientX,e.clientY)});
+  g.addEventListener("pointerleave",e=>{if(e.pointerType==="mouse"&&!pinned)tip.hidden=true});
+  g.addEventListener("click",e=>{e.stopPropagation();const was=pinned===g;hide();if(!was){pinned=g;g.classList.add("on");show(g,e.clientX,e.clientY);}});
+  g.addEventListener("focus",()=>{const r=g.getBoundingClientRect();show(g,r.right,r.top)});
+  g.addEventListener("blur",()=>{if(!pinned)tip.hidden=true});
+});
+document.addEventListener("click",hide);addEventListener("scroll",hide,{passive:true});
+ledger("sen-d",SEN.D,"d",SEN.openD,"Democrats"); ledger("sen-r",SEN.R,"r",SEN.openR,"Republicans");
+ledger("hou-d",HOU.D,"d",HOU.openD,"Democrats"); ledger("hou-r",HOU.R,"r",HOU.openR,"Republicans");
+legend("legend-sen"); legend("legend-hou");
+</script>
+</body>
+</html>
